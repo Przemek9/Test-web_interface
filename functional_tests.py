@@ -10,6 +10,12 @@ import unittest
 import splinter
 from splinter import Browser
 from splinter.exceptions import DriverNotFoundError
+import time
+
+
+localtime = time.localtime(time.time())
+date_today = (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())[0:10])
+
 
 ## @brief test-cases
 class TestFunctionalDnaasm(unittest.TestCase):
@@ -121,11 +127,18 @@ class TestFunctionalDnaasm(unittest.TestCase):
         self.assertEqual(len(self.browser.find_by_text(u"Wydział Elektroniki i Technik Informacyjnych,")), 1)
         self.assertEqual(len(self.browser.find_by_text(u"Warszawa 2015")), 1)
         self.assertEqual(len(self.browser.find_by_text(u"Parametry aplikacji")), 1)
-        #self.assertEqual(len(self.browser.find_by_text(u"czas serwera:")), 1)
-        #self.assertEqual(len(self.browser.find_by_text(u"wersja bazy danych: PostgreSQL 9.4.18 on x86_64-unknown-linux-gnu")), 1)
-        #self.assertEqual(len(self.browser.find_by_text(u"wersja serwera: 0.07.1635; Python: 3.5.3; Arch: ; Os: Linux #1 SMP Debian 4.9.110-1 (2018-07-05); Django: 2.0.2")), 1)
+        self.assertEqual(((self.browser.find_by_id('server_time').first.text))[0:13], u"czas serwera:")
+        self.assertEqual(((self.browser.find_by_id('server_time_val').first.text)[0:10]), date_today)
+        self.assertEqual((self.browser.find_by_id('db_version').first.text)[0:19], u"wersja bazy danych:")
+        self.assertEqual(self.browser.find_by_id('db_version_val').first.text, u"PostgreSQL 9.4.18 on x86_64-unknown-linux-gnu")
+        self.assertEqual((self.browser.find_by_id('server_version').first.text)[0:15], u"wersja serwera:")
+        self.assertEqual(self.browser.find_by_id('server_version_val').first.text, u"0.07.1635; Python: 3.5.3; Arch: ; Os: Linux #1 SMP Debian 4.9.110-1 (2018-07-05); Django: 2.0.2")
+        self.assertEqual((self.browser.find_by_id('client_version').first.text)[0:15], u"wersja klienta:")
+        self.assertEqual(self.browser.find_by_id('client_version_val').first.text, u"0.06.1634")
 
-    def test05TestHelpPageEN(self):
+
+        
+    def test04TestHelpPageEN(self):
         """tests Help Page EN"""
         self.clickCssLink('#a_lang_en')
         self.assertEqual(len(self.browser.find_by_text(u'DnaAssembler - Help')), 1)
@@ -151,9 +164,18 @@ class TestFunctionalDnaasm(unittest.TestCase):
         self.assertEqual(len(self.browser.find_by_text(u"Faculty of Electronics and Information Technology,")), 1)
         self.assertEqual(len(self.browser.find_by_text(u"Warsaw 2015")), 1)
         self.assertEqual(len(self.browser.find_by_text(u"server time: ")), 1)
-        #self.assertEqual(len(self.browser.find_by_text(u"db version: PostgreSQL 9.4.18 on x86_64-unknown-linux-gnu")), 1)
-        #self.assertEqual(len(self.browser.find_by_text(u"server version: 0.07.1635; Python: 3.5.3; Arch: ; Os: Linux #1 SMP Debian 4.9.110-1 (2018-07-05); Django: 2.0.2")), 1)
-        #self.assertEqual(len(self.browser.find_by_text(u"client version: 0.06.1634")), 1)
+        self.assertEqual(((self.browser.find_by_id('server_time').first.text))[0:12], u"server time:")
+        self.assertEqual(((self.browser.find_by_id('server_time_val').first.text)[0:10]), date_today)
+        self.assertEqual((self.browser.find_by_id('db_version').first.text)[0:11], u"db version:")
+        self.assertEqual(self.browser.find_by_id('db_version_val').first.text, u"PostgreSQL 9.4.18 on x86_64-unknown-linux-gnu")
+        self.assertEqual((self.browser.find_by_id('server_version').first.text)[0:15], u"server version:")
+        self.assertEqual(self.browser.find_by_id('server_version_val').first.text, u"0.07.1635; Python: 3.5.3; Arch: ; Os: Linux #1 SMP Debian 4.9.110-1 (2018-07-05); Django: 2.0.2")
+        self.assertEqual((self.browser.find_by_id('client_version').first.text)[0:15], u"client version:")
+        self.assertEqual(self.browser.find_by_id('client_version_val').first.text, u"0.06.1634")
+
+
+        
+
         
 if __name__ == "__main__":
     www_browser = sys.argv[1] if len(sys.argv) >= 2 else 'chrome'
