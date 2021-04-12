@@ -11,11 +11,8 @@ import splinter
 from splinter import Browser
 from splinter.exceptions import DriverNotFoundError
 import time
-
-
 localtime = time.localtime(time.time())
 date_today = (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())[0:10])
-
 
 ## @brief test-cases
 class TestFunctionalDnaasm(unittest.TestCase):
@@ -172,11 +169,7 @@ class TestFunctionalDnaasm(unittest.TestCase):
         self.assertEqual(self.browser.find_by_id('server_version_val').first.text, u"0.07.1635; Python: 3.5.3; Arch: ; Os: Linux #1 SMP Debian 4.9.110-1 (2018-07-05); Django: 2.0.2")
         self.assertEqual((self.browser.find_by_id('client_version').first.text)[0:15], u"client version:")
         self.assertEqual(self.browser.find_by_id('client_version_val').first.text, u"0.06.1634")
-
-
-        
-
-        
+   
 if __name__ == "__main__":
     www_browser = sys.argv[1] if len(sys.argv) >= 2 else 'chrome'
     www_addr = sys.argv[2] if len(sys.argv) >= 3 else '127.0.0.1'
